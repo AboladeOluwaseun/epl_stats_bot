@@ -1,0 +1,170 @@
+version: "3"
+
+tasks:
+
+  # -------------------------------------------------------
+  # HELP
+  # -------------------------------------------------------
+  default:
+    silent: true
+    cmds:
+      - task --list
+
+  # -------------------------------------------------------
+  # SETUP & INSTALLATION
+  # -------------------------------------------------------
+
+  setup:
+    desc: "Create project directories and generate keys"
+    cmds:
+      - mkdir -p airflow/dags airflow/plugins airflow/logs
+      - mkdir -p src/ingestion src/processing src/storage src/api src/bot src/utils
+      - mkdir -p tests/unit tests/integration tests/fixtures
+      - mkdir -p sql/ddl sql/dml
+      - mkdir -p data/raw data/processed data/archive
+      - mkdir -p logs config docs
+      # - |
+      #   python - << 'EOF'
+      #   from cryptography.fernet import Fernet
+      #   import secrets
+      #   print("AIRFLOW__CORE__FERNET_KEY=" + Fernet.generate_key().decode())
+      #   print("AIRFLOW__WEBSERVER__SECRET_KEY=" + secrets.token_hex(32))
+      #   EOF
+    silent: false
+
+  install:
+    desc: "Install Python dependencies"
+    cmds:
+      - pip install -r requirements.txt
+
+  # -------------------------------------------------------
+  # DOCKER ACTIONS
+  # -------------------------------------------------------
+
+  start:
+    desc: "Start all Docker services"
+    cmds:
+      - docker compose up -d
+      - pwsh -Command "Start-Sleep -Seconds 5"
+      - echo "Airflow:http://localhost:8080"
+      - echo "API Docs:http://localhost:8000/docs"
+
+  stop:
+    desc: "Stop all services"
+    cmds:
+      - docker compose down -v
+
+  restart:
+    desc: "Restart all services"
+    cmds:
+      - docker compose restart
+
+  ps:
+    desc: "Show running containers"
+    cmds:
+      - docker compose ps
+
+  clean:
+    desc: "Remove containers & volumes"
+    cmds:
+      - docker compose down -v
+      - rm -rf airflow/logs/*
+      - rm -rf logs/*
+
+  # -------------------------------------------------------
+  # LOGS
+  # -------------------------------------------------------
+
+  logs:
+    desc: "Show all logs"
+    cmds:
+      - docker compose logs -f
+
+  logs-airflow:
+    cmds:
+      - docker compose logs -f airflow-webserver airflow-scheduler
+
+  logs-api:
+    cmds:
+      - docker compose logs -f fastapi
+
+  logs-bot:
+    cmds:
+      - docker compose logs -f telegram-bot
+
+  # -------------------------------------------------------
+  # TESTING / QUALITY
+  # -------------------------------------------------------
+
+  test:
+    desc: "Run all tests"
+    cmds:
+      - pytest tests -v
+
+  format:
+    desc: "Format code"
+    cmds:
+      - black src tests
+      - isort src tests
+
+  lint:
+    desc: "Run linters"
+    cmds:
+      - flake8 src tests --max-line-length=100
+
+  # -------------------------------------------------------
+  # DATABASE TASKS
+  # -------------------------------------------------------
+
+  db-shell:
+    desc: "Open PostgreSQL shell"
+    cmds:
+      - docker exec -it epl_postgres psql -U postgres -d epl_stats
+
+  db-init:
+    desc: "Initialize database schema"
+    cmds:
+      - docker exec epl_postgres psql -U postgres -d epl_stats -f /docker-entrypoint-initdb.d/create_tables.sql
+
+  # -------------------------------------------------------
+  # UI SHORTCUTS
+  # -------------------------------------------------------
+
+  airflow-ui:
+    desc: "Open Airflow UI"
+    cmds:
+      - |
+        if [[ "$OS" == "Windows_NT" ]]; then \
+          start http://localhost:8080; \
+        else \
+          open http://localhost:8080 || xdg-open http://localhost:8080; \
+        fi
+
+  api-docs:
+    desc: "Open FastAPI docs"
+    cmds:
+      - |
+        if [[ "$OS" == "Windows_NT" ]]; then \
+          start http://localhost:8000/docs; \
+        else \
+          open http://localhost:8000/docs || xdg-open http://localhost:8000/docs; \
+        fi
+
+  # -------------------------------------------------------
+  # HEALTH CHECK
+  # -------------------------------------------------------
+
+  health:
+    desc: "Check service health"
+    cmds:
+      - echo "PostgreSQL:"
+      - docker exec epl_postgres pg_isready -U postgres
+      - echo ""
+      - echo "Redis:"
+      - docker exec epl_redis redis-cli ping
+      - echo ""
+      - echo "Airflow:"
+      - curl -s http://localhost:8080/health
+      - echo ""
+      - echo "FastAPI:"
+      - curl -s http://localhost:8000/health

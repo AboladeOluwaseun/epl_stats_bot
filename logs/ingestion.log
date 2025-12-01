@@ -1,0 +1,43 @@
+2025-11-26 15:19:34 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:20:00 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:20:36 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:21:49 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:23:01 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:24:03 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:24:22 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:24:34 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:25:16 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-26 15:25:51 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-27 10:06:57 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-27 10:07:34 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-27 10:30:17 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-27 10:30:41 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-27 10:30:55 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-27 10:36:24 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-27 10:51:51 - __main__ - INFO - Successfully fetched data from fixtures/rounds
+2025-11-27 10:55:32 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-27 10:57:00 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-27 11:19:27 - __main__ - ERROR - API returned errors: {'live': 'The Live field does not match the regular expression: [id-id-id...] or string: all.'}
+2025-11-27 11:19:58 - __main__ - ERROR - API returned errors: {'live': 'The Live field does not match the regular expression: [id-id-id...] or string: all.'}
+2025-11-27 11:20:45 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-27 11:22:05 - __main__ - ERROR - API returned errors: {'live': 'The Live field does not match the regular expression: [id-id-id...] or string: all.'}
+2025-11-27 11:22:29 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-27 11:23:26 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-27 11:24:43 - __main__ - ERROR - API returned errors: {'live': 'The Live field does not match the regular expression: [id-id-id...] or string: all.'}
+2025-11-27 11:25:02 - __main__ - ERROR - API returned errors: {'live': 'The Live field does not match the regular expression: [id-id-id...] or string: all.'}
+2025-11-27 11:25:27 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-27 11:26:30 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-27 11:26:59 - __main__ - ERROR - API returned errors: {'season': 'The Season field is required.'}
+2025-11-27 11:27:30 - __main__ - ERROR - API returned errors: {'plan': 'Free plans do not have access to this season, try from 2021 to 2023.'}
+2025-11-27 12:10:04 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-28 16:05:36 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-28 16:10:53 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-28 16:14:17 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-28 16:16:06 - __main__ - INFO - Successfully fetched data from fixtures
+2025-11-28 16:16:07 - __main__ - INFO - Successfully fetched data from leagues/seasons
+2025-12-01 08:59:12 - __main__ - INFO - Successfully fetched data from fixtures
+2025-12-01 08:59:12 - __main__ - INFO - Successfully fetched data from leagues/seasons
+2025-12-01 09:01:06 - __main__ - INFO - Successfully fetched data from leagues/seasons
+2025-12-01 09:18:13 - __main__ - INFO - Successfully fetched data from leagues
+2025-12-01 09:19:41 - __main__ - INFO - Successfully fetched data from leagues
+2025-12-01 09:28:57 - __main__ - INFO - Successfully fetched data from leagues
