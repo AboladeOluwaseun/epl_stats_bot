@@ -41,3 +41,45 @@
 2025-12-01 09:18:13 - __main__ - INFO - Successfully fetched data from leagues
 2025-12-01 09:19:41 - __main__ - INFO - Successfully fetched data from leagues
 2025-12-01 09:28:57 - __main__ - INFO - Successfully fetched data from leagues
+2025-12-01 10:48:59 - __main__ - INFO - fetching epl league data
+2025-12-01 10:49:03 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 10:51:24 - __main__ - INFO - fetching epl league data
+2025-12-01 10:51:25 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 11:37:27 - __main__ - INFO - fetching epl league data
+2025-12-01 11:37:28 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 11:45:41 - __main__ - INFO - fetching epl league data
+2025-12-01 11:45:42 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 11:51:02 - __main__ - INFO - fetching epl league data
+2025-12-01 11:51:03 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 12:03:24 - __main__ - INFO - fetching epl league data
+2025-12-01 12:03:25 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 12:04:21 - __main__ - INFO - fetching epl league data
+2025-12-01 12:04:22 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 12:09:05 - __main__ - INFO - fetching epl league data
+2025-12-01 12:09:06 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 12:12:08 - __main__ - INFO - fetching epl league data
+2025-12-01 12:12:09 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 13:21:00 - __main__ - INFO - fetching epl league data
+2025-12-01 13:21:00 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 13:27:46 - __main__ - INFO - fetching epl league data
+2025-12-01 13:27:46 - src.ingestion.api_client - ERROR - Request failed: HTTPSConnectionPool(host='v3.football.api-sports.io', port=443): Max retries exceeded with url: /leagues?id=39 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000276AC0D15D0>: Failed to resolve 'v3.football.api-sports.io' ([Errno 11001] getaddrinfo failed)"))
+2025-12-01 13:27:47 - src.ingestion.api_client - ERROR - Request failed: HTTPSConnectionPool(host='v3.football.api-sports.io', port=443): Max retries exceeded with url: /leagues?id=39 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000276AC0D3510>: Failed to resolve 'v3.football.api-sports.io' ([Errno 11001] getaddrinfo failed)"))
+2025-12-01 13:27:49 - src.ingestion.api_client - ERROR - Request failed: HTTPSConnectionPool(host='v3.football.api-sports.io', port=443): Max retries exceeded with url: /leagues?id=39 (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000276AC0DD450>: Failed to resolve 'v3.football.api-sports.io' ([Errno 11001] getaddrinfo failed)"))
+2025-12-01 13:27:49 - src.ingestion.api_client - ERROR - Failed to fetch data from leagues after 3 attempts
+2025-12-01 13:27:49 - __main__ - WARNING - No standings fetched
+2025-12-01 13:30:27 - __main__ - INFO - fetching epl league data
+2025-12-01 13:30:27 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 13:42:08 - __main__ - INFO - fetching epl league data
+2025-12-01 13:42:11 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 14:25:52 - __main__ - INFO - fetching epl league data
+2025-12-01 14:25:52 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 14:27:25 - __main__ - INFO - fetching epl league data
+2025-12-01 14:27:26 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 14:32:33 - __main__ - INFO - fetching epl league data
+2025-12-01 14:32:34 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 14:33:27 - __main__ - INFO - fetching epl league data
+2025-12-01 14:33:28 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 14:36:04 - __main__ - INFO - fetching epl league data
+2025-12-01 14:36:04 - src.ingestion.api_client - INFO - Successfully fetched data from leagues
+2025-12-01 22:10:01 - __main__ - INFO - fetching epl league data
+2025-12-01 22:10:02 - src.ingestion.api_client - INFO - Successfully fetched data from leagues

@@ -38,3 +38,4 @@ class Config:
     # SPARK_APP_NAME = 'EPL-Stats-Pipeline'
     
 config = Config()
+

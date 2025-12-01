@@ -1,11 +1,17 @@
 import psycopg2
 from psycopg2.extras import execute_values, RealDictCursor
 from typing import List, Dict, Optional, Any
-from utils.configs import config
-from utils.logger import setup_logger
+from pathlib import Path
+import sys
+import json
+
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+from src.utils.configs import config
+from src.utils.logger import setup_logger
 from contextlib import contextmanager
 
-from ingestion.api_client import FootballAPIClient
+from src.ingestion.api_client import FootballAPIClient
 
 logger = setup_logger(__name__, 'database.log')
 
@@ -38,13 +44,14 @@ class PostgresHandler:
             if conn:
                 conn.close()
 
-    def execute_query(self):
-        query = '''
+    def execute_query(self, query):
+        # query = '''
 
-            '''
+        #     '''
         with self.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(query)
+                return None
 
     def insert_raw_responses(self, endpoint, request_params, response_data):
         
@@ -56,6 +63,7 @@ class PostgresHandler:
         
         with self.get_connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(query, endpoint, request_params,response_data)
+                cur.execute(query, (endpoint, json.dumps(request_params),
+                    json.dumps(response_data)))
                 return cur.fetchone()[0]
 

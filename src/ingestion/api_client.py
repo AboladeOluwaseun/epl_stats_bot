@@ -75,8 +75,8 @@ class FootballAPIClient:
          return data
     
 
-if __name__ == "__main__":
-    # Example usage
-    get_league_data = FootballAPIClient()
-    league = json.dumps(get_league_data.get_league(), indent=4)
-    print(league)
+# if __name__ == "__main__":
+#     # Example usage
+#     get_league_data = FootballAPIClient()
+#     league = json.dumps(get_league_data.get_league(), indent=4)
+#     print(league)
