@@ -24,7 +24,7 @@ class Datafetcher:
         league = self.api_client.get_league()
 
         if not league:
-            logger.warning('No standings fetched')
+            logger.warning('No lesgue data fetched')
             return False
         # logger.info(f'Fetched standings:{league[3]}')
 
@@ -34,12 +34,12 @@ class Datafetcher:
             league
         ) 
        
-        return
+        return league
         
     
-if __name__ == '__main__':
-    fetcher = Datafetcher()
-    result = fetcher.fetch_and_store_league()
-    print(result)
+# if __name__ == '__main__':
+#     fetcher = Datafetcher()
+#     result = fetcher.fetch_and_store_league()
+#     print(result)
 
     
