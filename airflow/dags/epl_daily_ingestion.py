@@ -38,7 +38,7 @@ def fetch_league():
 
 
 fetch_league_task = PythonOperator(
-    task_id='fetch_fixtures',
+    task_id='fetch_league',
     python_callable=fetch_league,
     provide_context=True,
     dag=dag,

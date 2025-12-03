@@ -44,13 +44,15 @@ class PostgresHandler:
             if conn:
                 conn.close()
 
-    def execute_query(self, query):
+    def execute_query(self, query, params:Optional[tuple]=None, fetch=True):
         # query = '''
 
         #     '''
         with self.get_connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(query)
+                cur.execute(query, params)
+                if fetch:
+                    return cur.fetchall() 
                 return None
 
     def insert_raw_responses(self, endpoint, request_params, response_data):

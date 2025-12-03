@@ -14,3 +14,17 @@
 
 2025-12-01 13:21:01 - src.storage.postgres_handler - ERROR - Database error: function takes at most 2 arguments (4 given)
 2025-12-01 13:30:27 - src.storage.postgres_handler - ERROR - Database error: can't adapt type 'dict'
+2025-12-03 14:07:35 - src.storage.postgres_handler - ERROR - Database error: argument 1 must be a string or unicode object: got tuple instead
+2025-12-03 14:17:21 - src.storage.postgres_handler - ERROR - Database error: syntax error at or near "%"
+LINE 9:             WHERE endpoint = %s
+                                     ^
+
+2025-12-03 14:19:08 - src.storage.postgres_handler - ERROR - Database error: syntax error at or near "/"
+LINE 9:             WHERE endpoint = /leagues
+                                     ^
+
+2025-12-03 22:34:54 - src.storage.postgres_handler - ERROR - Database error: connection to server at "localhost" (::1), port 5432 failed: Connection refused (0x0000274D/10061)
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
+	Is the server running on that host and accepting TCP/IP connections?
+
