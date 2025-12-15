@@ -23,13 +23,6 @@ tasks:
       - mkdir -p sql/ddl sql/dml
       - mkdir -p data/raw data/processed data/archive
       - mkdir -p logs config docs
-      # - |
-      #   python - << 'EOF'
-      #   from cryptography.fernet import Fernet
-      #   import secrets
-      #   print("AIRFLOW__CORE__FERNET_KEY=" + Fernet.generate_key().decode())
-      #   print("AIRFLOW__WEBSERVER__SECRET_KEY=" + secrets.token_hex(32))
-      #   EOF
     silent: false
 
   install:

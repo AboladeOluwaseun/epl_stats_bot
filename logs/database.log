@@ -28,3 +28,22 @@ LINE 9:             WHERE endpoint = /leagues
 connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
 	Is the server running on that host and accepting TCP/IP connections?
 
+2025-12-11 12:38:15 - src.storage.postgres_handler - ERROR - Database error: column "leagues" does not exist
+LINE 9:             WHERE endpoint = leagues
+                                     ^
+
+2025-12-11 12:38:26 - src.storage.postgres_handler - ERROR - Database error: syntax error at or near "/"
+LINE 9:             WHERE endpoint = /leagues
+                                     ^
+
+2025-12-11 12:40:17 - src.storage.postgres_handler - ERROR - Database error: column "leagues" does not exist
+LINE 9:             WHERE endpoint = leagues
+                                     ^
+
+2025-12-11 12:42:08 - src.storage.postgres_handler - ERROR - Database error: syntax error at or near "/"
+LINE 9:             WHERE endpoint = /leagues
+                                     ^
+
+2025-12-11 12:47:08 - src.storage.postgres_handler - ERROR - Database error: the query contains more than one '%s' placeholder
+2025-12-11 12:51:46 - src.storage.postgres_handler - ERROR - Database error: the query contains more than one '%s' placeholder
+2025-12-11 12:52:33 - src.storage.postgres_handler - ERROR - Database error: the query contains more than one '%s' placeholder
