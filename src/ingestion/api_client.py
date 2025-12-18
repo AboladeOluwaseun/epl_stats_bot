@@ -66,6 +66,14 @@ class FootballAPIClient:
     def get_league(self):
          data = self.make_request('leagues', {'id':39})
          return data
+    
+    def get_teams(self, league_id=None, season=None):
+        params = {
+            'league': league_id or self.league_id,
+            'season': season or self.current_season
+        } 
+        data = self.make_request("teams", params)
+        return data
     # def get_fixtures(self, league_id, season):
     #      params = {
     #           'league':league_id,

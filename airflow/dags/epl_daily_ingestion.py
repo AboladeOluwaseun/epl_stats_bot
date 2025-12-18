@@ -8,8 +8,6 @@ import sys
 sys.path.insert(0, '/opt/airflow')
 from src.utils.logger import setup_logger
 from src.ingestion.data_fetcher import Datafetcher
-from src.processing.league_processor import LeagueProcessor
-from src.processing.seasons_processor import SeasonsProcessor
 from src.processing.pipeline import ProcessingPipeline
 logger = setup_logger(__name__, )
 default_args = {
@@ -26,7 +24,7 @@ dag = DAG(
     'epl_complete_pipeline',
     default_args=default_args,
     description='Complete EPL data pipeline: Ingestion → Processing → Aggregation',
-    start_date= datetime(2025, 12, 13),
+    start_date= datetime(2025, 12, 18),
     schedule= '0 6 * * *',
     tags=['epl', 'ingestion', 'daily'],
     catchup=False
@@ -38,21 +36,18 @@ def fetch_league():
     league = fetch_and_store_league_data.fetch_and_store_league()
     return league
 
-def processing_pipeline():
-        process_data = ProcessingPipeline()
-        results = process_data.run_full_processing()
-        return results
-def process_league():
-    process_league_data = LeagueProcessor()
-    logger.info('Task: Processing league data')
-    league_count = process_league_data.process_leagues()
-    return league_count
+def fetch_teams():
+    fetch_and_store_teams= Datafetcher()
+    logger.info('Task: Fetching teams...')
+    teams = fetch_and_store_teams.fetch_and_store_all_epl_teams_historical()
+    return teams
 
-def process_seasons():
-    process_seasons_data = SeasonsProcessor()
-    logger.info('Task: Processing seasons data')
-    seasons_count = process_seasons_data.process_seasons()
-    return seasons_count
+def processing_pipeline():
+    process_data = ProcessingPipeline()
+    logger.info('Task:Running processing pipeline')
+    results = process_data.run_full_processing()
+    return results
+
 
 fetch_and_store_league_task = PythonOperator(
     task_id='fetch_league',
@@ -61,19 +56,12 @@ fetch_and_store_league_task = PythonOperator(
     dag=dag,
 )
 
-# process_league_task = PythonOperator(
-#     task_id='process_league',
-#     python_callable = process_league,
-#     provide_context = True,
-#     dag = dag
-# )
-
-# process_seasons_task = PythonOperator(
-#     task_id='process_seasons',
-#     python_callable = process_seasons,
-#     provide_context = True,
-#     dag = dag
-# )
+fetch_and_store_teams_task = PythonOperator(
+    task_id='fetch_and_store_teams',
+    python_callable=fetch_teams,
+    provide_context=True,
+    dag=dag,
+)
 
 process_data_task = PythonOperator(
      task_id = 'process_data',
@@ -82,4 +70,4 @@ process_data_task = PythonOperator(
      dag = dag
 )
 
-fetch_and_store_league_task >> process_data_task
+[fetch_and_store_league_task, fetch_and_store_teams_task ]>> process_data_task

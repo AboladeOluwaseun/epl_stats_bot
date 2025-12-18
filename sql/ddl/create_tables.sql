@@ -38,6 +38,35 @@ CREATE TABLE IF NOT EXISTS dim_seasons (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+CREATE TABLE IF NOT EXISTS dim_venues (
+    venue_id INTEGER PRIMARY KEY,
+    venue_name VARCHAR(100) NOT NULL,
+    address TEXT,
+    city VARCHAR(100),
+    capacity INTEGER,
+    surface VARCHAR(50),
+    image_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS dim_teams (
+    team_id INTEGER PRIMARY KEY,
+    team_name VARCHAR(100) NOT NULL,
+    short_name VARCHAR(50),
+    team_code VARCHAR(10),
+    country VARCHAR(50),
+    founded_year INTEGER,
+    is_national BOOLEAN DEFAULT FALSE,
+    logo_url TEXT,
+    venue_id INTEGER REFERENCES dim_venues(venue_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_teams_country ON dim_teams(country);
+
 -- =============================================================================
 -- RAW DATA STORAGE (for reprocessing)
 -- =============================================================================
