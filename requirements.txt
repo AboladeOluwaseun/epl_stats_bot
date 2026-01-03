@@ -1,1 +1,9 @@
+fastapi
+uvicorn
+twilio
+psycopg2-binary
+pandas
+requests
+python-dotenv
+thefuzz
 # apache-airflow==2.7.3

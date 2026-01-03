@@ -12,23 +12,49 @@ from src.utils.logger import setup_logger
 logger = setup_logger(__name__, 'processing.log')
 
 class TeamsProcessor(BaseProcessor):
-    def process_teams_and_venues(self) -> dict:
+    def process_teams_and_venues(self, seasons=None) -> dict:
 
         logger.info("Starting teams and venues processing...")
 
-        # Get raw responses for teams endpoint
-        raw_responses = self.get_raw_api_responses('/teams')
+        # Get ALL raw responses for teams endpoint
+        # Modified query to get all seasons if none specified
+        if seasons:
+            # Get specific seasons
+            query = """
+                SELECT 
+                    response_id,
+                    endpoint,
+                    request_params,
+                    response_data,
+                    fetched_at
+                FROM raw_api_responses
+                WHERE endpoint = %s
+                AND (request_params->>'season')::int = ANY(%s)
+                ORDER BY fetched_at DESC
+            """
+            raw_responses = self.db_handler.execute_query(query, ('/teams', seasons))
+            logger.info(f'${raw_responses}')
+        else:
+            # Get all seasons
+            raw_responses = self.get_raw_api_responses('/teams')
 
         if not raw_responses:
             logger.warning("No raw teams responses found")
             return {'teams': 0, 'venues': 0}
         
+        logger.info(f"Processing {len(raw_responses)} raw team responses...")
+
         all_teams = []
         all_venues = []
+        seasons_processed = set()
 
         for raw in raw_responses:
             # Access response_data (4th column in your structure)
             response_data = raw[3]
+            request_params = raw[2]
+            season = request_params.get('season')
+
+            seasons_processed.add(season)
         
             # Get the teams array from response
             teams_data = response_data.get('response', [])
@@ -66,13 +92,19 @@ class TeamsProcessor(BaseProcessor):
                         'image_url': venue.get('image')
                     }
                     all_venues.append(venue_record)
-            
+        
+        logger.info(f"Extracted data from seasons: {sorted(seasons_processed)}")
+        logger.info(f"Total teams before dedup: {len(all_teams)}")
+        logger.info(f"Total venues before dedup: {len(all_venues)}")
+
         # Remove duplicates
         df_teams = pd.DataFrame(all_teams)
         df_teams = df_teams.drop_duplicates(subset=['team_id'], keep='last')
 
         df_venues = pd.DataFrame(all_venues)
         df_venues = df_venues.drop_duplicates(subset=['venue_id'], keep='last')
+
+        logger.info(f"After deduplication: {len(df_teams)} unique teams, {len(df_venues)} unique venues")
 
         # Upsert venues first (teams reference venues)
         venues_count = 0
@@ -98,7 +130,8 @@ class TeamsProcessor(BaseProcessor):
         
         return {
             'teams': teams_count,
-            'venues': venues_count
+            'venues': venues_count,
+            'seasons_processed': sorted(seasons_processed)
         } 
 
         

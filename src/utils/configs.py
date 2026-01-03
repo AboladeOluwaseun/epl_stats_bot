@@ -31,8 +31,10 @@ class Config:
     # AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
     # S3_BUCKET = os.getenv('S3_BUCKET', 'epl-stats-data')
     
-    # # Bot
-    # TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+    # Bot / WhatsApp (Twilio)
+    TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+    TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+    TWILIO_WHATSAPP_NUMBER = os.getenv('TWILIO_WHATSAPP_NUMBER', 'whatsapp:+14155238886') # Twilio sandbox number
     
     # # Spark
     # SPARK_APP_NAME = 'EPL-Stats-Pipeline'

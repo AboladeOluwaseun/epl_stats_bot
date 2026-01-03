@@ -92,3 +92,17 @@
 2025-12-15 14:04:15 - __main__ - INFO - Fetching EPL teams data...
 2025-12-15 14:04:15 - src.ingestion.api_client - INFO - Successfully fetched data from teams
 2025-12-15 14:04:15 - __main__ - INFO - Fetched 20 teams
+2026-01-02 08:07:38 - src.ingestion.data_fetcher - INFO - Fetching standings for season 2024...
+2026-01-02 08:07:38 - src.ingestion.api_client - INFO - Fetching standings for league 39, season 2024
+2026-01-02 08:07:39 - src.ingestion.api_client - ERROR - API returned errors: {'requests': 'You have reached the request limit for the day, Go to https://dashboard.api-football.com to upgrade your plan.'}
+2026-01-02 08:07:39 - src.ingestion.data_fetcher - WARNING - No standings data found.
+2026-01-02 08:08:21 - src.ingestion.data_fetcher - INFO - Fetching standings for season 2025...
+2026-01-02 08:08:21 - src.ingestion.api_client - INFO - Fetching standings for league 39, season 2025
+2026-01-02 08:08:22 - src.ingestion.api_client - ERROR - API returned errors: {'plan': 'Free plans do not have access to this season, try from 2022 to 2024.'}
+2026-01-02 08:08:22 - src.ingestion.data_fetcher - WARNING - No standings data found.
+2026-01-02 08:08:22 - src.ingestion.data_fetcher - INFO - Fetching standings for season 2024...
+2026-01-02 08:08:22 - src.ingestion.api_client - INFO - Fetching standings for league 39, season 2024
+2026-01-02 08:08:23 - src.ingestion.api_client - ERROR - API returned errors: {'requests': 'You have reached the request limit for the day, Go to https://dashboard.api-football.com to upgrade your plan.'}
+2026-01-02 08:08:23 - src.ingestion.data_fetcher - WARNING - No standings data found.
+2026-01-02 08:08:45 - src.ingestion.api_client - INFO - Fetching standings for league 39, season 2023
+2026-01-02 08:08:46 - src.ingestion.api_client - ERROR - API returned errors: {'requests': 'You have reached the request limit for the day, Go to https://dashboard.api-football.com to upgrade your plan.'}

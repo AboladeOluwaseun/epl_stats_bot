@@ -24,7 +24,6 @@ class BaseProcessor:
             FROM raw_api_responses
             WHERE endpoint = %s
             ORDER BY fetched_at DESC
-            LIMIT 1
         """
         results = self.db_handler.execute_query(query, (endpoint,))
         logger.info(f"Fetched  raw responses for endpoint: {endpoint}")
