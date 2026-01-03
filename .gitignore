@@ -12,3 +12,14 @@ ENV/
 .venv
 virtualenv/
 logs/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.DS_Store
+.vscode/
+.idea/
+*.exe
+ngrok.exe
+*.pdf
