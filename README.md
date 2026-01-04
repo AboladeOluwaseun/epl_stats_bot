@@ -1,11 +1,11 @@
-# ⚽ EPL Stats Pipeline
+# ⚽ EPL Stats Bot
 
-> End-to-end data engineering pipeline for English Premier League statistics with conversational bot interface
+> A conversational WhatsApp bot for English Premier League statistics, powered by a robust data engineering pipeline.
 
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Airflow](https://img.shields.io/badge/airflow-2.7.3-red.svg)](https://airflow.apache.org/)
 [![FastAPI](https://img.shields.io/badge/fastapi-0.104+-green.svg)](https://fastapi.tiangolo.com/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Twilio](https://img.shields.io/badge/twilio-whatsapp-red.svg)](https://www.twilio.com/whatsapp)
 
 ## 📋 Table of Contents
 
@@ -18,362 +18,157 @@
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [API Documentation](#api-documentation)
 - [Bot Commands](#bot-commands)
 - [Development](#development)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
 ## 🎯 Overview
 
-The EPL Stats Pipeline is a comprehensive data engineering solution that:
+The **EPL Stats Bot** is an end-to-end data solution that brings real-time football statistics directly to your WhatsApp. It features a fully automated data pipeline that ingests data from external APIs, processes it for analytics, and serves it through a conversational interface.
 
-1. **Ingests** EPL data from external APIs (matches, players, standings)
-2. **Processes** raw data using Apache Spark and stores in Delta Lake
-3. **Warehouses** analytics-ready data in PostgreSQL
-4. **Serves** statistics through a FastAPI REST API
-5. **Provides** user-friendly access via Telegram bot
-
-**Use Case:** Settle football debates in WhatsApp groups with real-time statistics!
+**Use Case:** Instantly settle football debates in WhatsApp groups with accurate, up-to-date EPL statistics!
 
 ---
 
 ## 🏗️ Architecture
 
-```
-Football API → Airflow → S3 (Raw) → Spark → Delta Lake → PostgreSQL → FastAPI → Telegram Bot
+The project follows a modular architecture designed for reliability and scalability:
+
+```mermaid
+graph LR
+    A[Football API] --> B[Airflow DAGs]
+    B --> C[(PostgreSQL)]
+    C --> D[FastAPI App]
+    D --> E[Twilio Webhook]
+    E --> F[WhatsApp User]
 ```
 
-### Data Flow:
-1. **Ingestion:** Airflow DAGs fetch data from Football API daily/hourly
-2. **Storage:** Raw JSON stored in S3 with date partitioning
-3. **Processing:** Spark jobs transform data and write to Delta Lake
-4. **Warehouse:** Processed data loaded into PostgreSQL (star schema)
-5. **API:** FastAPI serves pre-aggregated statistics with Redis caching
-6. **Interface:** Telegram bot provides conversational access
+1.  **Ingestion & Orchestration:** Apache Airflow schedules daily and match-day tasks to fetch data from API-Football.
+2.  **Storage:** Processed data is stored in a structured PostgreSQL 15 database.
+3.  **API Layer:** A FastAPI server handles business logic, fuzzy searching, and stats aggregation.
+4.  **Bot Interface:** Twilio WhatsApp API serves as the bridge between the user and the backend.
 
 ---
 
 ## ✨ Features
 
-- 🔄 **Automated Data Pipeline** - Daily updates, hourly on match days
-- 📊 **Rich Statistics** - Matches, players, teams, standings
-- ⚡ **Fast Queries** - Materialized views and Redis caching
-- 🤖 **Conversational Interface** - Natural language bot commands
-- 📈 **Scalable Architecture** - Handles multiple seasons/leagues
-- 🧪 **Data Quality** - Automated validation and testing
-- 📱 **Real-time Updates** - Near real-time match statistics
-- 🔐 **Secure** - Environment-based configuration
+- 🔄 **Automated Pipeline** - Scheduled ingestion of leagues, seasons, fixtures, and player stats.
+- 🤖 **Smart Search** - Uses fuzzy matching (`thefuzz`) to find players and teams even with typos.
+- 📊 **Rich Stats** - Detailed player profiles, team standings, and recent match results.
+- 🤺 **Head-to-Head** - Compare two teams directly via WhatsApp.
+- 🐳 **Dockerized** - Entire stack (Bot, Airflow, Postgres) runs seamlessly in Docker.
 
 ---
 
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
-| **Orchestration** | Apache Airflow 2.7+ |
-| **Processing** | Apache Spark (PySpark) |
-| **Storage Format** | Delta Lake |
-| **Data Warehouse** | PostgreSQL 15 |
+| :--- | :--- |
+| **Orchestration** | Apache Airflow 2.7.3 |
+| **Database** | PostgreSQL 15 |
 | **API Framework** | FastAPI |
-| **Caching** | Redis |
-| **Bot Framework** | python-telegram-bot |
+| **Bot Integration** | Twilio WhatsApp SDK |
+| **Data Processing** | Python (Pandas) |
+| **Fuzzy Matching** | thefuzz |
 | **Containerization** | Docker & Docker Compose |
-| **Cloud** | AWS (S3, RDS, EC2/ECS) |
 
 ---
 
 ## ✅ Prerequisites
 
-- **Docker** 20.10+ and Docker Compose 2.0+
-- **Python** 3.10+
-- **AWS Account** (for S3 storage)
-- **Football API Key** from [RapidAPI](https://rapidapi.com/api-sports/api/api-football)
-- **Telegram Bot Token** from [@BotFather](https://t.me/BotFather)
+- **Docker** and **Docker Compose**
+- **Python 3.10+** (for local development)
+- **Twilio Account** (Account SID, Auth Token, and WhatsApp Number)
+- **API-Football Key** (from [RapidAPI](https://rapidapi.com/api-sports/api/api-football))
 
 ---
 
 ## 🚀 Installation
 
-### 1. Clone Repository
-\`\`\`bash
-git clone https://github.com/yourusername/epl-stats-pipeline.git
-cd epl-stats-pipeline
-\`\`\`
-
-### 2. Create Environment File
-\`\`\`bash
+### 1. Clone & Setup
+```bash
+git clone https://github.com/AboladeOluwaseun/epl_stats_bot.git
+cd epl_stats_bot
 cp .env.example .env
-# Edit .env and add your API keys and credentials
-\`\`\`
+```
 
-### 3. Generate Airflow Fernet Key
-\`\`\`bash
-python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
-# Add output to AIRFLOW__CORE__FERNET_KEY in .env
-\`\`\`
+### 2. Configure Environment
+Edit the `.env` file with your credentials:
+- `FOOTBALL_API_KEY`: Your API-Football key.
+- `TWILIO_ACCOUNT_SID`: From your Twilio console.
+- `TWILIO_AUTH_TOKEN`: From your Twilio console.
+- `TWILIO_WHATSAPP_NUMBER`: Your Twilio sandbox or production number.
 
-### 4. Start Services
-\`\`\`bash
+### 3. Start Services
+```bash
 docker-compose up -d
-\`\`\`
-
-### 5. Access Services
-- **Airflow UI:** http://localhost:8080 (admin/admin)
-- **FastAPI Docs:** http://localhost:8000/docs
-- **PostgreSQL:** localhost:5432
-
----
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-Key variables to configure in `.env`:
-
-\`\`\`bash
-# Required
-FOOTBALL_API_KEY=your_rapidapi_key
-TELEGRAM_BOT_TOKEN=your_bot_token
-AWS_ACCESS_KEY_ID=your_aws_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret
-
-# Database
-POSTGRES_PASSWORD=secure_password
-
-# Airflow
-AIRFLOW__CORE__FERNET_KEY=your_fernet_key
-\`\`\`
-
-See `.env.example` for complete configuration options.
+```
 
 ---
 
 ## 📖 Usage
 
-### Starting the Pipeline
+### Accessing Services
+- **Airflow UI:** `http://localhost:8080` (Default: `Admin/Admin`)
+- **Bot Webhook:** `http://localhost:5000/webhook` (Needs to be exposed via ngrok for Twilio)
 
-\`\`\`bash
-# Start all services
-docker-compose up -d
-
-# Check service status
-docker-compose ps
-
-# View logs
-docker-compose logs -f airflow-scheduler
-\`\`\`
-
-### Triggering DAGs
-
-\`\`\`bash
-# Via Airflow UI (http://localhost:8080)
-# Or via CLI:
+### Triggering the Pipeline
+The pipeline runs automatically via Airflow, but you can trigger it manually:
+```bash
 docker exec epl_airflow_scheduler airflow dags trigger epl_daily_ingestion
-\`\`\`
-
-### Using the Bot
-
-1. Open Telegram and search for your bot
-2. Start conversation: `/start`
-3. Try commands:
-   - `/topscorers` - Top goal scorers
-   - `/standings` - League table
-   - `/h2h Arsenal Chelsea` - Head-to-head stats
-
----
-
-## 📁 Project Structure
-
-\`\`\`
-epl-stats-pipeline/
-├── airflow/
-│   ├── dags/              # Airflow DAG definitions
-│   ├── plugins/           # Custom operators
-│   └── logs/              # Execution logs
-├── src/
-│   ├── ingestion/         # API clients and data fetchers
-│   ├── processing/        # Spark jobs
-│   ├── storage/           # Database handlers
-│   ├── api/               # FastAPI application
-│   ├── bot/               # Telegram bot
-│   └── utils/             # Shared utilities
-├── sql/
-│   ├── ddl/               # Table definitions
-│   └── dml/               # Seed data
-├── tests/
-│   ├── unit/              # Unit tests
-│   └── integration/       # Integration tests
-├── config/                # Configuration files
-├── docs/                  # Documentation
-├── docker-compose.yaml    # Docker services
-├── Dockerfile            # Container definition
-├── requirements.txt       # Python dependencies
-└── README.md             # This file
-\`\`\`
-
----
-
-## 📚 API Documentation
-
-Once running, visit: **http://localhost:8000/docs**
-
-### Sample Endpoints
-
-\`\`\`
-GET /api/v1/top-scorers?season=2024-25&limit=10
-GET /api/v1/standings?season=2024-25
-GET /api/v1/head-to-head?team1=Arsenal&team2=Chelsea
-GET /api/v1/player-stats/276?season=2024-25
-GET /api/v1/team-form/42
-\`\`\`
+```
 
 ---
 
 ## 🤖 Bot Commands
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `/start` | Welcome message | `/start` |
-| `/topscorers` | Top 10 goal scorers | `/topscorers` |
-| `/standings` | League table | `/standings` |
-| `/h2h <team1> <team2>` | Head-to-head | `/h2h Arsenal Chelsea` |
-| `/form <team>` | Last 5 matches | `/form Liverpool` |
-| `/stats <player>` | Player stats | `/stats Haaland` |
-| `/upcoming` | Next fixtures | `/upcoming` |
-| `/help` | Show all commands | `/help` |
+Send these messages to the bot on WhatsApp:
+
+| Command | Example | Result |
+| :--- | :--- | :--- |
+| **Help/Start** | `help` | Shows available commands. |
+| **Player Stats** | `Haaland` | Returns latest stats & photo. |
+| **Team Results** | `Arsenal` | Returns the last 5 match results. |
+| **Standings** | `table` | Returns the current EPL standings. |
+| **Head-to-Head** | `Arsenal vs Chelsea` | Compares recent meetings. |
+
+---
+
+## 📁 Project Structure
+
+```
+FOOTBALL STATS BOT/
+├── airflow/
+│   └── dags/              # Airflow DAG definitions
+├── src/
+│   ├── bot/               # FastAPI & WhatsApp logic
+│   ├── ingestion/         # API clients
+│   ├── processing/        # Data transformation logic
+│   ├── storage/           # Database handlers
+│   └── utils/             # Configs and logging
+├── sql/
+│   └── ddl/               # Database schema
+├── docker-compose.yaml    # Infrastructure orchestration
+├── Dockerfile            # Bot container definition
+└── requirements.txt       # Python dependencies
+```
 
 ---
 
 ## 👨‍💻 Development
 
-### Local Setup (without Docker)
-
-\`\`\`bash
-# Create virtual environment
+### Local Setup
+```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\\Scripts\\activate
-
-# Install dependencies
+source venv/bin/activate
 pip install -r requirements.txt
+python src/bot/app.py
+```
 
-# Run tests
-pytest tests/
-
-# Run API locally
-uvicorn src.api.main:app --reload
-
-# Run bot locally
-python src/bot/telegram_bot.py
-\`\`\`
-
-### Code Quality
-
-\`\`\`bash
-# Format code
-black src/
-
-# Sort imports
-isort src/
-
-# Lint
-flake8 src/
-pylint src/
-
-# Type checking
-mypy src/
-\`\`\`
-
----
-
-## 🧪 Testing
-
-\`\`\`bash
-# Run all tests
-pytest tests/ -v
-
-# With coverage
-pytest tests/ --cov=src --cov-report=html
-
-# Run specific test file
-pytest tests/unit/test_ingestion.py
-
-# Run integration tests
-pytest tests/integration/ -v
-\`\`\`
-
----
-
-## 🚢 Deployment
-
-### AWS Deployment
-
-1. **Provision Infrastructure:**
-   \`\`\`bash
-   cd infrastructure/terraform
-   terraform init
-   terraform plan
-   terraform apply
-   \`\`\`
-
-2. **Deploy Services:**
-   - Push Docker images to ECR
-   - Deploy to ECS/EC2
-   - Set up RDS and S3
-
-3. **Configure Monitoring:**
-   - CloudWatch logs and metrics
-   - Airflow alerting
-
-See `docs/deployment.md` for detailed instructions.
-
----
-
-## 🤝 Contributing
-
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
-
----
-
-## 👤 Author
-
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourname)
-
----
-
-## 🙏 Acknowledgments
-
-- [API-Football](https://www.api-football.com/) for EPL data
-- [Apache Airflow](https://airflow.apache.org/) community
-- [FastAPI](https://fastapi.tiangolo.com/) framework
-
----
-
-## 📮 Support
-
-For issues and questions:
-- 🐛 **Bug Reports:** [GitHub Issues](https://github.com/yourusername/epl-stats-pipeline/issues)
-- 💬 **Discussions:** [GitHub Discussions](https://github.com/yourusername/epl-stats-pipeline/discussions)
-- 📧 **Email:** your.email@example.com
-
----
-
-**⭐ If this project helped you, please star it on GitHub!**
+### Exposing Local Bot
+To test on WhatsApp, use ngrok to expose port 5000:
+```bash
+ngrok http 5000
+```
+Then update your Twilio Sandbox Webhook URL to `https://<your-ngrok-url>/webhook`.
